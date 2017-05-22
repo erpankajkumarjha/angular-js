@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  </head>
+  <body>
+    <div>
+    <h1>'@' : One way binding</h1>
+      <p> One way binding means a parent sending anything to the directive scope through the attribute, gets reflected in the directive. But if any change in the directive happens it will not reflect in parent. </p>  
+          <p>Syntax:</p>    
+
+      <pre>
+  <code>
+
+        var app= angular.module('applicaionName',[]);
+
+        app.directive('directiveName', function(){
+          return {
+            restrict: 'EA',
+            scope: {
+              stringParam:'@'
+            },
+            template: "{stringParam}}"
+          };
+        });
+      </pre>
+  </code>
+</div>
+<hr />
+
+  <div ng-app="testAngularApp">
+      <company name="Company1" owner="Owner1"></company>
+      <company name="Company2" owner="Owner2"></company>
+      <company name="Company3" owner="Owner3"></company>
+  </div>
+     
+  
+<script type="text/javascript">
+  
+  var app= angular.module('testAngularApp',[]);
+
+  app.directive('company', function(){
+    return {
+      restrict: 'EA',
+      scope: {
+        name:'@',
+        owner:'@'
+      },
+      template: '<p>{{name}} - {{owner}}</p>'
+    };
+  });
+
+</script>
+  </body>
+</html>
