@@ -1,0 +1,98 @@
+<!doctype html>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  </head>
+  <body>
+    <div>
+    <h1>'=' : Two way binding</h1>
+      <p> Two way binding means the parent scope will also reflect to directive scope vice-versa. It is used for passing object to the directive instead of string. This object could be changed from both sides, from parent or from directive.  </p>  
+          <p>Syntax:</p>    
+
+      <pre>
+  <code>
+
+        var app= angular.module('applicaionName',[]);
+
+        app.directive('directiveName', function(){
+          return {
+            restrict: 'EA',
+            scope: {
+              stringParam:'='
+            },
+            template: "{stringParam}}"
+          };
+        });
+      </pre>
+  </code>
+</div>
+
+  <div class="container" ng-app="testAngularApp">
+    <div ng-controller="ProductController">
+    <div ng-show="editSectiondisplay">
+      Product Name: <input type="text" ng-model="editproduct.name">
+      <br>  {{editproduct.name}}
+      Product Price: <input type="text" ng-model="editproduct.price">
+      <br>
+       <button ng-click="save()">Save</button>
+       <hr />
+
+    </div>
+    <div ng-repeat="products in product">
+      <product-stock data="products" edit="editData($index)"></product-stock>
+    </div>
+     </div>
+  </div>  
+  
+<script type="text/javascript">
+  
+  var app= angular.module('testAngularApp',[]);
+
+  app.controller("ProductController", function ($scope) {
+    $scope.editSectiondisplay = false;
+    $scope.product = [ {
+        id : 1,
+        name: 'Mobile',
+        price: '100',
+        stock: true
+    }, {
+        id : 2,
+        name: 'Television',
+        price: '1000',
+        stock: false
+    }, {
+        id : 3,
+        name: 'MacBook Pro',
+        price: '800',
+        stock: false
+    }];
+ 
+    $scope.editData = function (index) {
+      $scope.editSectiondisplay = true;
+      $scope.editindex = index;
+      $scope.editproduct = $scope.product[index];
+    };
+
+    $scope.save = function(){
+      $scope.product[$scope.editindex] = $scope.editproduct;
+      $scope.editproduct = {};
+      $scope.editSectiondisplay = false;
+    };
+ 
+});
+
+  app.directive('productStock', function(){
+    return {
+      restrict: 'E',
+      scope: {
+        data: '=',
+        edit: '&'
+      },
+      template: '<p>{{data.name}} - {{data.price}} <button  ng-click="edit()">Edit</button></p>'
+    };
+  });
+
+</script>
+  </body>
+</html>
